@@ -108,4 +108,4 @@ var exeFunction = function(dataLong){
 
 dataLong.then(function(data){
   exeFunction(data);
-}) // coding this was absolute hell, i'm not even sure what day it is or if I'm still in my own body. All I see is javascript errors.
+}) // coding this was absolute hell, i'm not even sure what day it is or if I'm still in my own body. When I close my eyes I see javascript errors.
