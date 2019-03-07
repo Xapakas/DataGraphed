@@ -1,0 +1,17 @@
+country,happiness,gdp,continent
+Norway,7.53,1.61,Europe
+United States,6.99,1.54,NorthAmerica
+Mexico,6.57,1.15,NorthAmerica
+Qatar,6.37,1.87,Asia
+Malaysia,6.08,1.29,Asia
+Algeria,5.87,1.09,Africa
+Peru,5.71,1.03,SouthAmerica
+China,5.27,1.08,Asia
+Greece,5.22,1.28,Europe
+Somalia,5.15,0.02,Africa
+South Africa,4.82,1.05,Africa
+Iraq,4.49,1.10,Asia
+India,4.31,0.79,Asia
+Ukraine,4.09,0.89,Europe
+Haiti,3.60,0.36,NorthAmerica
+Central African Republic,2.69,0,Africa
