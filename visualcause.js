@@ -1,67 +1,111 @@
-var dataLong = d3.csv("2017.csv");
+var dataLong = d3.csv("happiness.csv");
 
-console.log(dataLong); // 2 axes: happiness d[1] and gdp per capita d[5]. y is happiness, x is gdp per capita
+// console.log(dataLong); // 2 axes: happiness d[1] and gdp per capita d[5]. y is happiness, x is gdp per capita
 
-console.log(d3.max(dataLong));
+var exeFunction = function(dataLong){
 
-var xMin = d3.min(dataLong, function(d){
-  console.log(d.Economy)
-  return d.Economy; // gdp per capita
-});
+  var width = 800;
+  var height = 600;
 
-var xMax = d3.max(dataLong, function(d){
-  return d.Economy;
-});
+  var padding = 50;
 
-var yMin = d3.min(dataLong, function(d){
-  return d.Happiness; // happiness
-});
+  var xMin = d3.min(dataLong, function(d){
+    return d.gdp; // gdp per capita
+  });
 
-var yMax = d3.max(dataLong, function(d){
-  return d.Happiness;
-});
+  var xMax = d3.max(dataLong, function(d){
+    return d.gdp;
+  });
 
-var rMax = d3.max(dataLong, function(d){
-  return d.Generosity; // generosity
-});
+  var yMin = d3.min(dataLong, function(d){
+    return d.happiness; // happiness
+  });
 
-var width = 600;
-var height = 600;
+  var yMax = d3.max(dataLong, function(d){
+    return d.happiness;
+  });
 
-// console.log(xMin, xMax, yMin, yMax);
+  var xScale = d3.scaleLinear()
+                 .domain([xMin,xMax])
+                 .range([padding,width - padding]);
 
-var xScale = d3.scaleLinear()
-               .domain([xMin,xMax])
-               .range([0,width])
-               .nice();
+  var yScale = d3.scaleLinear()
+                 .domain([yMax,yMin])
+                 .range([padding,height - padding]);
 
-var yScale = d3.scaleLinear()
-               .domain([yMin,yMax])
-               .range([0,height])
-               .nice();
+  var rScale = d3.scaleLinear()
+                 .domain([0, 1.87])
+                 .range([2,5]);
 
-var rScale = d3.scaleLinear()
-               .domain([0, yMax])
-               .range([2,5])
-               .nice();
+  var svg = d3.select("body")
+              .append("svg")
+              .attr("width",width)
+              .attr("height",height);
 
-var svg = d3.select("body")
-            .append("svg")
-            .attr("width",width)
-            .attr("height",height);
+  var xAxis = d3.axisBottom()
+                .scale(xScale)
+                .ticks(10);
 
-svg.selectAll("circle")
-   .data(dataLong)
-   .enter()
-   .append("circle")
-   .attr("cx", function(d){
-     return xScale(d.Economy);
-   })
-   .attr("cy",function(d){
-     return yScale(d.Happiness);
-   })
-   .attr("r",5)
-   // .attr("r",function(d){
-   //   return rScale(d[9]);
-   // })
-   .attr("fill","red");
+  var yAxis = d3.axisLeft()
+                .scale(yScale)
+                .ticks(10);
+
+  svg.selectAll("circle")
+     .data(dataLong)
+     .enter()
+     .append("circle")
+     .attr("cx", function(d){
+       return xScale(d.gdp);
+     })
+     .attr("cy",function(d){
+       return yScale(d.happiness);
+     })
+     .attr("r",10)
+     .attr("fill",function(d){
+       if (d.continent == "Africa"){
+         return "blue";
+       };
+       if (d.continent == "Asia"){
+         return "red";
+       };
+       if (d.continent == "Europe"){
+         return "yellow";
+       };
+       if (d.continent == "NorthAmerica"){
+         return "green";
+       };
+       if (d.continent == "SouthAmerica"){
+         return "purple";
+       };
+     })
+
+  svg.selectAll("text")
+     .data(dataLong)
+     .enter()
+     .append("text")
+     .text(function(d){
+       return d.country;
+     })
+     .attr("x",function(d){
+       return xScale(d.gdp);
+     })
+     .attr("y",function(d){
+       return yScale(d.happiness) - 10;
+     })
+     .attr("font-family","sans-serif");
+
+  svg.append("g")
+     .attr("class", "axis")
+     .attr("transform", "translate(0," + (height - padding) + ")")
+     .call(xAxis);
+
+  svg.append("g")
+     .attr("class", "axis")
+     .attr("transform", "translate(" + padding + ",0)")
+     .call(yAxis);
+
+  };
+
+dataLong.then(function(data){
+  exeFunction(data);
+})
